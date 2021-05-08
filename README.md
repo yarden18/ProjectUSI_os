@@ -1,12 +1,18 @@
 # ProjectUSI_os
 The project is running in python and all the data saved in database in mySQL, so there are python code and SQL code.
 SQL:
+
 1.	create_DB - Create the DataBases
 2.	create_combine_columns_summary_description - create text field of the summary and description together.
-3.	Create_feature_label_table – create table with all the relevant features and some calculation of more relevant features.
-4.	calculate_features_all_num_bad_issue – another calculated feature.
+3.	Add_columns_main_changes – add more columns to the main table.
+4.	Delete_no_sprint_no_done – delete USI that don’t relate to spirt and haven’t done yet.
+5.	Create_feature_label_table – create table with all the relevant features and some calculation of more relevant features.
+6.	calculate_features_all_num_bad_issue – another calculated feature.
+
 Python codes:
+
 The first part is the data preparation, which includes the data extraction and the calculation of fields:
+
 1.	Create_DB_sql – extract all the data from the open sources to the sql DB.
 2.	calculate_time_add_sprint – calculate for each USI, when it was added to sprint
 3.	Prepare_data_sql – some calculation and organization regarding the text fields.
