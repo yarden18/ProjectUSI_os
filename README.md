@@ -15,6 +15,7 @@ The first part is the data preparation, which includes the data extraction and t
 6.	Add_columns_empty_label – another calculated feature.
 
 The second part is all the experiments process:
+
 7.	Select_num_topic_model – calculation to check the best number of topic model and saving the running results.
 8.	Select_length_doc_vector - calculation to check the best length of the vector and save the running results.
 9.	Create_train_val_test –  calculate all the features, preparing the data and split the data to train, validation and test set (call to create_topic_model, create_doc_vec).
