@@ -2,7 +2,10 @@
 The project is running in python and all the data saved in database in mySQL, so there are python code and SQL code.
 SQL:
 
-1.	create_DB - Create the DataBases
+These codes preparing the DB and all the tables and columns that we need.
+For the SQL codes we don’t need any inputs.
+
+1.	create_DB - Create the DataBases. This is an SQL which creates all the empty tables that we need with all the wanted columns, names and types. The output of the code is the empty tables of the DB.
 2.	create_combine_columns_summary_description - create text field of the summary and description together.
 3.	Add_columns_main_changes – add more columns to the main table.
 4.	Delete_no_sprint_no_done – delete USI that don’t relate to spirt and haven’t done yet.
