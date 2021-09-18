@@ -3,6 +3,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 
 def run_random_forest(x_train, x_test, y_train, y_test):
+    """
+    this function run random forest prediction and return the results
+    """
     clf = RandomForestClassifier(n_estimators=1000, max_features='sqrt', random_state=7)
     # Train the model
     clf.fit(x_train, y_train)
@@ -29,7 +32,8 @@ def run_random_forest(x_train, x_test, y_train, y_test):
             y_pred, feature_imp, precision, recall, thresholds]
 
 if __name__ == "__main__":
-
+    
+    # create the feature vector with all the combination of groups
     features_vector = [['num_headlines', 'has_code', 'has_url', 'num_question_marks', 'has_template', 'len_sum_desc',
                         'len_description', 'if_description_empty_tbd', 'if_acceptance_empty_tbd', 'len_acceptance',
                         'num_sentences', 'num_words', 'avg_word_len', 'avg_num_word_in_sentence',
@@ -154,6 +158,7 @@ if __name__ == "__main__":
     projects_key = ['DEVELOPER', 'REPO', 'XD', 'DM']
 
     for project_key in projects_key:
+        # for each feature group run random forest prediction model and write the results to excel
         for label_name in dict_labels.items():
             print("data: {}, \n label_name.key: {}, \n".format(project_key, label_name[0]))
             features_data_train1 = pd.read_csv(
