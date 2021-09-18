@@ -16,6 +16,10 @@ import sklearn
 import xgboost as xgb
 from xgboost import XGBClassifier
 
+"""
+this script run the all the different model types,
+get the data with the best features and hyper parameters, make predictions and return the prediction results.
+"""
 
 def down_sampling1(x, y, is_down):
     # down_sampling:
@@ -46,6 +50,9 @@ def down_sampling1(x, y, is_down):
 
 def run_random_forest(x_train, x_test, y_train, y_test, num_trees, max_feature, max_depth_rf, random_num,
                       project_key, label, all_but_one_group):
+    """
+    this function predict with the random forest model and return the results
+    """
     clf = RandomForestClassifier(n_estimators=num_trees, max_features=max_feature, max_depth=max_depth_rf,
                                  random_state=random_num)
     # Train the model
@@ -77,6 +84,9 @@ def run_random_forest(x_train, x_test, y_train, y_test, num_trees, max_feature, 
 
 def run_neural_net(x_train, x_test, y_train, y_test, hidden_layer_size, activation_nn, solver_nn, alpha_nn,
                    learning_rate_nn, random_num, project_key, label, all_but_one_group):
+    """
+    this function predict with the neural network model and return the results
+    """
     a = hidden_layer_size.replace("(", "")
     a = a.replace(")", "")
     a = a.replace(",", "")
@@ -108,34 +118,13 @@ def run_neural_net(x_train, x_test, y_train, y_test, hidden_layer_size, activati
             y_pred, precision, recall, thresholds]
 
 
-def run_xgboost_old(x_train, x_test, y_train, y_test):
-    clf = GradientBoostingClassifier(n_estimators=1000, max_features='sqrt', random_state=8)
-    # Train the model
-    clf.fit(x_train, y_train)
-    y_pred = clf.predict(x_test)
-    y_score = clf.predict_proba(x_test)
-    accuracy = metrics.accuracy_score(y_test, y_pred)
-    # Model Accuracy
-    print("Accuracy xgboost:", accuracy)
-    confusion_matrix = metrics.confusion_matrix(y_test, y_pred)
-    print("confusion_matrix xgboost: \n {}".format(confusion_matrix))
-    classification_report = metrics.classification_report(y_test, y_pred)
-    print("classification_report: \n {}".format(classification_report))
-    # Create precision, recall curve
-    average_precision = metrics.average_precision_score(y_test, y_score[:, 1])
-    print('Average precision-recall score xgboost: {0:0.2f}'.format(average_precision))
-    auc = metrics.roc_auc_score(y_test, y_score[:, 1])
-    print('AUC roc xgboost: {}'.format(auc))
-    precision, recall, thresholds = metrics.precision_recall_curve(y_test, y_score[:, 1])
-    area_under_pre_recall_curve = metrics.auc(recall, precision)
-    print('area_under_pre_recall_curve xgboost: {}'.format(area_under_pre_recall_curve))
-
-    return [accuracy, confusion_matrix, classification_report, area_under_pre_recall_curve, average_precision, auc,
-            y_pred, precision, recall, thresholds]
-
 
 def run_xgboost(x_train, x_test, y_train, y_test, num_trees, max_depth_xg,
                 alpha_xg, scale_pos_weight_xg , min_child_weight_xg, seed_xg, project_key, label, all_but_one_group):
+    """
+    this function predict with the xgboost model and return the results
+    """
+    
     clf = XGBClassifier(n_estimators=num_trees, max_depth=max_depth_xg, alpha=alpha_xg,
                         scale_pos_weight=scale_pos_weight_xg, min_child_weight=min_child_weight_xg, seed=seed_xg)
     # Train the model
@@ -164,6 +153,9 @@ def run_xgboost(x_train, x_test, y_train, y_test, num_trees, max_depth_xg,
 
 
 def run_is_empty(x_train, x_test, y_train, y_test, project_key, label, all_but_one_group):
+    """
+    this function predict by if is empty and return the results
+    """
     # Train the model
     y_score = pd.DataFrame()
     y_score['0'] = x_test['label_is_empty'].apply(lambda x: 1.0 if x == 0 else 0.0)
@@ -190,6 +182,9 @@ def run_is_empty(x_train, x_test, y_train, y_test, project_key, label, all_but_o
 
 
 def run_is_zero(x_train, x_test, y_train, y_test, project_key, label, all_but_one_group):
+    """
+    this function predict by is zero and return the results
+    """
     # Train the model
     y_score = pd.DataFrame()
     y_score['0'] = x_test['label_is_empty'].apply(lambda x: 1.0)
@@ -217,6 +212,9 @@ def run_is_zero(x_train, x_test, y_train, y_test, project_key, label, all_but_on
 
 
 def run_random(x_train, x_test, y_train, y_test, project_key, label, all_but_one_group):
+    """
+    this function predict randomly and return the results
+    """
     # Train the model
     y_score = pd.DataFrame()
     y_score['0'] = x_test['label_is_empty'].apply(lambda x: random.uniform(0, 1))
@@ -245,6 +243,9 @@ def run_random(x_train, x_test, y_train, y_test, project_key, label, all_but_one
 
 
 def create_pre_rec_curve(y_test, y_score, auc, algorithm, project_key, label, all_but_one_group):
+    """
+    this function create the precision and recall curve and save the fig results 
+    """
     precision, recall, thresholds = metrics.precision_recall_curve(y_test, y_score, pos_label=1)
     area = metrics.auc(recall, precision)
     print('Area Under Curve: {0:0.2f}'.format(area))
@@ -271,7 +272,10 @@ def create_pre_rec_curve(y_test, y_score, auc, algorithm, project_key, label, al
 def run_model(x_train, x_test, y_train, y_test, is_base, project_key, label, num_trees_rf, max_feature_rf, max_depth_rf,
               hidden_layer_size, activation_nn, solver_nn, alpha_nn, learning_rate_nn, num_trees_xg, max_depth_xg,
               alpha_xg, scale_pos_weight_xg, min_child_weight_xg, all_but_one_group):
-
+    """
+    this function run all the prediction models with the functions detailed above and return the results
+    """
+    
     if is_base == 1:
 
         accuracy_empty, confusion_matrix_empty, classification_report_empty, area_under_pre_recall_curve_empty, \
