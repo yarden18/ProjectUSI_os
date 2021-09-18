@@ -1,3 +1,9 @@
+/*
+=================================================
+create new database to save all the needed tables
+=================================================
+*/;
+
 CREATE DATABASE  IF NOT EXISTS `data_base_os` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
 USE `data_base_os`;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
@@ -21,6 +27,12 @@ USE `data_base_os`;
 -- Table structure for table `all_changes`
 --
 
+/*
+=================================================
+create table which is saving all the changes 
+=================================================
+*/;
+
 DROP TABLE IF EXISTS `all_changes_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -40,7 +52,11 @@ CREATE TABLE `all_changes_os` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-
+/*
+======================================================================
+create table which is saving all the changes in description field
+======================================================================
+*/;
 
 DROP TABLE IF EXISTS `changes_description_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -87,6 +103,12 @@ CREATE TABLE `changes_description_os` (
 -- Table structure for table `changes_sprint`
 --
 
+/*
+======================================================================
+create table which is saving all the changes in sprint 
+======================================================================
+*/;
+
 DROP TABLE IF EXISTS `changes_sprint_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -114,6 +136,13 @@ CREATE TABLE `changes_sprint_os` (
 -- Table structure for table `changes_story_points`
 --
 
+/*
+======================================================================
+create table which is saving all the changes in story point field 
+======================================================================
+*/;
+
+
 DROP TABLE IF EXISTS `changes_story_points_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -139,6 +168,13 @@ CREATE TABLE `changes_story_points_os` (
 --
 -- Table structure for table `changes_summary`
 --
+
+
+/*
+======================================================================
+create table which is saving all the changes in summary field 
+======================================================================
+*/;
 
 DROP TABLE IF EXISTS `changes_summary_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -177,7 +213,11 @@ CREATE TABLE `changes_summary_os` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-
+/*
+======================================================================
+create table which is saving all the changes in criteria field 
+======================================================================
+*/;
 
 DROP TABLE IF EXISTS `changes_criteria_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -224,6 +264,12 @@ CREATE TABLE `changes_criteria_os` (
 -- Table structure for table `comments`
 --
 
+/*
+======================================================================
+create table which is saving all the comments 
+======================================================================
+*/;
+
 DROP TABLE IF EXISTS `comments_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -246,6 +292,12 @@ CREATE TABLE `comments_os` (
 --
 -- Table structure for table `commits_info`
 --
+
+/*
+======================================================================
+create table which is saving all the commits info 
+======================================================================
+*/;
 
 DROP TABLE IF EXISTS `commits_info_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -274,6 +326,12 @@ CREATE TABLE `commits_info_os` (
 -- Table structure for table `components`
 --
 
+/*
+======================================================================
+create table which is saving all the components info 
+======================================================================
+*/;
+
 DROP TABLE IF EXISTS `components_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -294,6 +352,12 @@ CREATE TABLE `components_os` (
 -- Table structure for table `fix_versions`
 --
 
+/*
+======================================================================
+create table which is saving all the fix_versions info 
+======================================================================
+*/;
+
 DROP TABLE IF EXISTS `fix_versions_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -313,6 +377,12 @@ CREATE TABLE `fix_versions_os` (
 --
 -- Table structure for table `issue_links`
 --
+
+/*
+======================================================================
+create table which is saving all the issue links 
+======================================================================
+*/;
 
 DROP TABLE IF EXISTS `issue_links_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -336,6 +406,12 @@ CREATE TABLE `issue_links_os` (
 -- Table structure for table `labels`
 --
 
+/*
+======================================================================
+create table which is saving all the labels info 
+======================================================================
+*/;
+
 DROP TABLE IF EXISTS `labels_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -356,6 +432,12 @@ CREATE TABLE `labels_os` (
 --
 -- Table structure for table `main_table`
 --
+
+/*
+======================================================================
+create the main table with all the nessecary data, and extra
+======================================================================
+*/;
 
 DROP TABLE IF EXISTS `main_table_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -477,6 +559,12 @@ CREATE TABLE `main_table_os` (
 -- Table structure for table `names_bugs_issue_links`
 --
 
+/*
+======================================================================
+create table which is saving the bugs info
+======================================================================
+*/;
+
 DROP TABLE IF EXISTS `names_bugs_issue_links_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -498,6 +586,12 @@ CREATE TABLE `names_bugs_issue_links_os` (
 -- Table structure for table `sab_task_names`
 --
 
+/*
+======================================================================
+create table which is saving the sab tasks info
+======================================================================
+*/;
+
 DROP TABLE IF EXISTS `sab_task_names_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
@@ -517,6 +611,12 @@ CREATE TABLE `sab_task_names_os` (
 --
 -- Table structure for table `sprints`
 --
+
+/*
+======================================================================
+create table which is saving the sprints info
+======================================================================
+*/;
 
 DROP TABLE IF EXISTS `sprints_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -540,6 +640,12 @@ CREATE TABLE `sprints_os` (
 --
 -- Table structure for table `versions`
 --
+
+/*
+======================================================================
+create table which is saving the versions info
+======================================================================
+*/;
 
 DROP TABLE IF EXISTS `versions_os`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
