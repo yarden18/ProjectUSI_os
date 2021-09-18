@@ -7,6 +7,9 @@ import mysql.connector
 import datetime
 import difflib
 
+"""
+the function next are getting the deatails of the issue and extract the wanted fields from it ant return this data 
+"""
 
 def get_issue_story_points(issue, name_map):
     try:
@@ -587,7 +590,7 @@ def get_changes_issue(mydb, sql_all_changes, sql_changes_summary, sql_changes_de
 def get_projects_info(project_num):
     """ get project num ad return his important info - project name, auth_jira, csv path, and repo
     param: project_num from 1 to 5
-    return: project info
+    return: project info (auth, project name, url, repo)
     """
     auth_jira = ""
     project_name = ""
@@ -640,16 +643,18 @@ def get_projects_info(project_num):
 
 
 if __name__ == "__main__":
+    # connect to SQL
     mysql_con = mysql.connector.connect(user='root', password='',
                                         host='localhost', database='data_base_os',
                                         auth_plugin='mysql_native_password', use_unicode=True)
-    # Create a cursor.
+    # Create a cursor
     cursor = mysql_con.cursor()
 
-    # Enforce UTF-8 for the connection.
+    # Enforce UTF-8 for the connection
     cursor.execute('SET NAMES utf8mb4')
     cursor.execute("SET CHARACTER SET utf8mb4")
     cursor.execute("SET character_set_connection=utf8mb4")
+    # the SQL queries to enter the data to the tables in sql 
     sql_comments = """INSERT INTO comments_os (issue_key, project_key, author, id, created, body, 
                                                 chronological_number) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
     sql_commits = """INSERT INTO commits_info_os (issue_key, project_key, author, insertions, code_deletions, code_lines, files,
@@ -725,6 +730,7 @@ if __name__ == "__main__":
                          %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
                          %s, %s, %s, %s, %s)"""
 
+    # run for all the 5 projects:
     for num in range(1, 6):
         print(num)
         # *********get project info, the loop moves on all 5 projects*****************
@@ -747,7 +753,8 @@ if __name__ == "__main__":
             if len(issues) == 0:
                 break
             initial += 1
-            # *************** run over all issues****************8
+            # *************** run over all issues****************
+            # for each issue, extract all the data fields from the net into the sql tables, some by using the fucntion in the start
             for issue in issues:
                 time.sleep(1)
                 issue_type = issue.fields.issuetype.name
@@ -827,6 +834,7 @@ if __name__ == "__main__":
                               num_changes_story_point, num_comments, num_issue_links, num_commits,
                               num_sprints, num_sub_tasks, issue.fields.watches.watchCount,
                               num_worklog, num_versions, num_fix_versions, num_labels, num_components)
+                # enter the data to the main table in SQL
                 mycursor = mysql_con.cursor()
                 try:
                     mycursor.execute(sql_main_table, main_table)
