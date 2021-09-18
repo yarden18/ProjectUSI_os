@@ -588,7 +588,7 @@ def get_changes_issue(mydb, sql_all_changes, sql_changes_summary, sql_changes_de
 
 
 def get_projects_info(project_num):
-    """ get project num ad return his important info - project name, auth_jira, csv path, and repo
+    """ get project num ad return his important info - project name, auth_jira, csv path, and repo. you need to save the git and update the adress in your local pc. 
     param: project_num from 1 to 5
     return: project info (auth, project name, url, repo)
     """
