@@ -1,6 +1,20 @@
-###########################################################
+####################################################################
 ########################### open source   ##########################
-###########################################################
+####################################################################
+
+
+#################################################################################
+/* add calculation fields to the main table which will use us in the model */
+#################################################################################
+
+
+
+###################################################################
+/* create new column which include the combination of the 
+summary test field and description text field to 1 text field */
+###################################################################
+
+
 ### calculated columns which i didn't add yet
 
 Alter table main_table_os add column summary_description_acceptance MEDIUMTEXT;       
@@ -21,6 +35,11 @@ CASE
 END;
 
 
+###################################################################
+/* create new column which include the combination of the original
+summary test field and description text field to 1 text field */
+###################################################################
+
 
 Alter table main_table_os add column original_summary_description_acceptance MEDIUMTEXT;       
 
@@ -40,6 +59,12 @@ CASE
 END;
 
 
+
+###################################################################
+/* create new column which calculated the number of changes in the 
+text fields */
+###################################################################
+
 Alter table main_table_os add column num_changes_summary_description_acceptance INT(11);       
 
 SET SQL_SAFE_UPDATES = 0;
@@ -50,6 +75,12 @@ CASE
 	ELSE 0
 END;
 
+###################################################################
+/* create new column which indicates if there were changes in the 
+text fields */
+###################################################################
+
+
 Alter table main_table_os add column has_changes_summary_description_acceptance INT(11);       
 
 SET SQL_SAFE_UPDATES = 0;
@@ -59,6 +90,13 @@ CASE
 	ELSE 0
 END;
 
+
+###################################################################
+/* create new column which calculated the number of words in the 
+text fields */
+###################################################################
+
+
 Alter table main_table_os add column num_different_words_all_text INT(11);       
 
 SET SQL_SAFE_UPDATES = 0;
@@ -67,6 +105,10 @@ different_words_plus_summary + different_words_minus_description + different_wor
 different_words_minus_acceptance_criteria + different_words_plus_acceptance_criteria;
 
 
+###################################################################
+/* create new column which calculate the ratio difference
+in words between the first version of the text and the last */
+###################################################################
 
 
 Alter table main_table_os add column num_different_ratio_words_all_text FLOAT;       
@@ -93,6 +135,11 @@ case
 end;
 
 
+
+###################################################################
+/* do the same for the text when enter the sprint and the last 
+version */
+###################################################################
 
 
 
