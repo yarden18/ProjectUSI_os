@@ -19,12 +19,16 @@ if __name__ == "__main__":
     projects_key = ['DEVELOPER', 'REPO', 'XD', 'DM']
 
     for project_key in projects_key:
+        # run for all the 4 projects 
         for label_name in dict_labels.items():
+            # for each label type (5,10,15,20)
             print("data: {}, \n label_name.key: {}, \n".format(project_key, label_name[0]))
+            # extract features
             features_data_train = pd.read_csv(
                 '{}/train_test/features_data_train_{}_{}.csv'.format(path,project_key, label_name[0]), low_memory=False)
             labels_train = pd.read_csv(
                 '{}/train_test/labels_train_{}_{}.csv'.format(path, project_key, label_name[0]), low_memory=False)
+            # delete unrelevant features
             del features_data_train['issue_key']
             del features_data_train['created']
             del features_data_train['original_story_points_sprint']
@@ -67,6 +71,7 @@ if __name__ == "__main__":
             print("data {}: \n, \n label_name.key: {}, \n".format(project_key, label_name[0]))
             names = list(features_data_train.columns.values)
             print(names)
+            # calculate the chi-square    
             rfe = RFE(model, 5)
             rfe = rfe.fit(features_data_train, labels_train['usability_label'])
             chi_square = sklearn.feature_selection.chi2(features_data_train, labels_train['usability_label'])
@@ -83,6 +88,7 @@ if __name__ == "__main__":
 
                 results = results.append(d, ignore_index=True)
 
+        # write the results to excel
         results.to_csv('{}/chi_square/chi_square_{}.csv'.format(path,project_key),index=False)
         print("project key done: {}".format(project_key))
 
