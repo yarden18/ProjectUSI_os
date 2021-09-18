@@ -3,7 +3,14 @@
 ###################################################################
 
 
-####################### add table and than combine to feature table #######################
+###################################################################
+/* create the calculate features num "bad" issues to writer and 
+general num issues to writer for this calculation we will help in 
+more table */
+###################################################################
+
+
+####################### add table and then combine to feature table #######################
 
 
 ### num issues
