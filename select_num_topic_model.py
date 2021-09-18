@@ -16,12 +16,18 @@ import clean_text
 
 
 def choose_data_base(db_name):
+    """
+    function which gets the name of the data base and return the SQL connection
+    """
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='{}'.format(db_name), auth_plugin='mysql_native_password',
                                         use_unicode=True)
     return mysql_con
 
 def split_train_valid_test(data_to_split):
+    """
+    function which get the data and split to train,validation and test sets
+    """
     data_to_split = data_to_split.sort_values(by=['time_add_to_sprint'])
     data_to_split = data_to_split.reset_index(drop=True)
     # with validation
@@ -35,6 +41,11 @@ def split_train_valid_test(data_to_split):
 
 
 def run_random_forest(x_train, x_test, y_train, y_test):
+    """
+    funcrion which get the train and test, run random forest prediction and return the results (accuracy, confusion_matrix, classification_report, 
+                                                                                                area_under_pre_recall_curve, average_precision, auc,
+                                                                                                y_pred, feature_imp, precision, recall, thresholds)
+    """
     clf = RandomForestClassifier(n_estimators=1000, max_features='sqrt', random_state=7)
     # Train the model
     clf.fit(x_train, y_train)
@@ -128,6 +139,9 @@ def compute_coherence_values(dictionary, doc_term_matrix, doc_clean, model_lsa, 
 
 
 def plot_graph(doc_clean, dictionary, doc_term_matrix, model_lsa, start, stop, step, project_key, path):
+    """
+    function who get the data and return the coherence graph in png format
+    """
     model_list, coherence_values = compute_coherence_values(dictionary, doc_term_matrix, doc_clean, model_lsa,
                                                             stop, start, step)
     x = range(start, stop, step)
@@ -142,7 +156,9 @@ def plot_graph(doc_clean, dictionary, doc_term_matrix, model_lsa, start, stop, s
     plt.close()
 
 def create_topic_model2(data_train, project_key, path):
-
+    """
+    function who gets the project data and send the data to plot_graph function
+    """
     start, stop, step = 2, 11, 1
     text_train_list = []
     for row in data_train['clean_text_new']:
@@ -156,6 +172,10 @@ def create_topic_model2(data_train, project_key, path):
 
 
 def create_topic_model(data_train, project_key, data_test, labels_train, labels_test,path):
+    """
+    function who gets the project data and run presiction to each number of topic model between 2 to 10.
+    to each num it make prediction and at the end save the results in excel file
+    """
     results = pd.DataFrame(columns=['project_key', 'usability_label', 'num_topics', 'feature_importance', 'accuracy_rf',
                                     'confusion_matrix_rf', 'classification_report_rf', 'area_under_pre_recall_curve_rf',
                                     'avg_precision_rf', 'area_under_roc_curve_rf', 'y_pred_rf', 'precision_rf',
@@ -247,6 +267,7 @@ def create_topic_model(data_train, project_key, data_test, labels_train, labels_
 
 if __name__ == "__main__":
 
+    # read the data from SQL
     db_name_os = 'data_base_os'
     mysql_con_os = choose_data_base(db_name_os)
     path = ''
@@ -262,7 +283,7 @@ if __name__ == "__main__":
     text_type = 'original_summary_description_acceptance_sprint'
 
     for data in data_all:
-
+        # run for each one of the projects
         project_key = data['project_key'][0]
         train, valid, test = split_train_valid_test(data)
 
