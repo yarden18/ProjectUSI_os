@@ -3,6 +3,9 @@ import ml_algorithms_optimization
 
 
 if __name__ == "__main__":
+    """
+    this script read all the feature data (train and validation only), and run the optimization of the hyper parameters (ml_algorithms_optimization)
+    """
 
     text_type = 'original_summary_description_acceptance_sprint'
 
@@ -13,7 +16,7 @@ if __name__ == "__main__":
                    }
     path = ''
     projects_key = ['DEVELOPER', 'REPO', 'XD', 'DM']
-
+    # extract the data for each project
     for project_key in projects_key:
         for label_name in dict_labels.items():
             print("data: {}, \n label_name.key: {}, \n".format(project_key, label_name[0]))
