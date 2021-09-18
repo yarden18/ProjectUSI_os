@@ -1,12 +1,16 @@
 # add columns
 
-# open sources
-ALTER TABLE data_base_os.main_table_os ADD COLUMN time_status_close datetime; # python
+########################################################################
+/* add columns to the main table which will use us in the model */
+########################################################################
 
-ALTER TABLE data_base_os.all_changes_os ADD COLUMN time_add_to_sprint datetime; # here
-ALTER TABLE data_base_os.all_changes_os ADD COLUMN is_after_sprint int(10); # here
-ALTER TABLE data_base_os.all_changes_os ADD COLUMN time_from_sprint float; # here
-ALTER TABLE data_base_os.all_changes_os ADD COLUMN is_after_close INT(10); # python
+# open sources
+ALTER TABLE data_base_os.main_table_os ADD COLUMN time_status_close datetime; # calculate in python
+
+ALTER TABLE data_base_os.all_changes_os ADD COLUMN time_add_to_sprint datetime; # calculate here
+ALTER TABLE data_base_os.all_changes_os ADD COLUMN is_after_sprint int(10); # calculate here
+ALTER TABLE data_base_os.all_changes_os ADD COLUMN time_from_sprint float; # calculate here
+ALTER TABLE data_base_os.all_changes_os ADD COLUMN is_after_close INT(10); # calculate in python
 
 
 
