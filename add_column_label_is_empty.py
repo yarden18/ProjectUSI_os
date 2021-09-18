@@ -3,11 +3,14 @@ import mysql.connector
 
 
 if __name__ == '__main__':
-
+    
+    # connection to SQL
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='data_base_os', auth_plugin='mysql_native_password',
                                         use_unicode=True)
 
+    # add a new column which check if the label is empty, and calculate it
+    
     sql_add_columns_label_only_empty = """alter table features_labels_table_os2 add column label_is_empty INT"""
     sql_update_columns_label_only_empty = """UPDATE features_labels_table_os2 SET label_is_empty= 
                                             CASE
@@ -20,6 +23,7 @@ if __name__ == '__main__':
                                                     ELSE 0
                                             END"""
 
+    # execute
     mycursor = mysql_con.cursor()
     try:
         mycursor.execute(sql_add_columns_label_only_empty)
