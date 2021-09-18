@@ -19,6 +19,12 @@ import sklearn
 import xgboost as xgb
 from xgboost import XGBClassifier
 
+"""
+this script run the all the different model types,
+get the data with the best features the selected parameters, make predictions and return the prediction results.
+in the main function we run the prediction every time with different parameters,
+and return the results
+"""
 
 def down_sampling1(x, y, is_down):
     # down_sampling:
@@ -52,6 +58,9 @@ def down_sampling1(x, y, is_down):
 
 def run_random_forest(x_train, x_test, y_train, y_test, num_trees, max_feature, max_depths, min_sample_split,
                       min_sample_leaf, bootstraps):
+    """
+    this function predict with the random forest model and return the results
+    """
     clf = RandomForestClassifier(n_estimators=num_trees, max_features=max_feature, max_depth=max_depths,
                                  min_samples_leaf=min_sample_leaf, min_samples_split=min_sample_split,
                                  bootstrap=bootstraps, random_state=7)
@@ -81,6 +90,9 @@ def run_random_forest(x_train, x_test, y_train, y_test, num_trees, max_feature, 
 
 
 def run_neural_net(x_train, x_test, y_train, y_test, num_unit_hidden_layer, max_iteration, solvers, num_batch, activations):
+    """
+    this function predict with the neural network model and return the results
+    """
     clf = MLPClassifier(solver=solvers, hidden_layer_sizes=num_unit_hidden_layer, random_state=1,
                         max_iter=max_iteration, batch_size=num_batch, activation=activations)
     # Train the model
@@ -109,6 +121,9 @@ def run_neural_net(x_train, x_test, y_train, y_test, num_unit_hidden_layer, max_
 
 def run_xgboost(x_train, x_test, y_train, y_test, num_trees, max_feature, max_depths, alpha_t, scale_pos,
                 num_child_weight_t):
+    """
+    this function predict with the xgboost model and return the results
+    """
     clf = GradientBoostingClassifier(n_estimators=num_trees, max_features=max_feature, max_depth=max_depths,
                                      random_state=7)
     # Train the model
@@ -134,32 +149,11 @@ def run_xgboost(x_train, x_test, y_train, y_test, num_trees, max_feature, max_de
             y_pred]
 
 
-def run_is_empty(x_train, x_test, y_train, y_test):
-    # Train the model
-    y_score = pd.DataFrame()
-    y_score['0'] = x_test['label_is_empty'].apply(lambda x: 1.0 if x == 0 else 0.0)
-    y_score['1'] = x_test['label_is_empty'].apply(lambda x: 1.0 if x == 1 else 0.0)
-    accuracy = metrics.accuracy_score(y_test, x_test['label_is_empty'])
-    # Model Accuracy
-    print("Accuracy xgboost:", accuracy)
-    confusion_matrix = metrics.confusion_matrix(y_test, x_test['label_is_empty'])
-    print("confusion_matrix xgboost: \n {}".format(confusion_matrix))
-    classification_report = metrics.classification_report(y_test, x_test['label_is_empty'])
-    print("classification_report: \n {}".format(classification_report))
-    # Create precision, recall curve
-    average_precision = metrics.average_precision_score(y_test, y_score['1'])
-    print('Average precision-recall score xgboost: {0:0.2f}'.format(average_precision))
-    auc = metrics.roc_auc_score(y_test, y_score['1'], average='macro', sample_weight=None, max_fpr=None)
-    print('AUC roc xgboost: {}'.format(auc))
-    precision, recall, thresholds = metrics.precision_recall_curve(y_test, y_score['1'], pos_label=1)
-    area_under_pre_recall_curve = metrics.auc(recall, precision)
-    print('area_under_pre_recall_curve xgboost: {}'.format(area_under_pre_recall_curve))
-
-    return [accuracy, confusion_matrix, classification_report, area_under_pre_recall_curve, average_precision, auc,
-            x_test['label_is_empty']]
-
 
 def create_pre_rec_curve(y_test, y_score, average_precision):
+    """
+    this function create the precision and recall curve and save the fig results 
+    """
     precision, recall, thresholds = metrics.precision_recall_curve(y_test, y_score[:, 1], pos_label=1)
     area = metrics.auc(recall, precision)
     print('Area Under Curve: {0:0.2f}'.format(area))
