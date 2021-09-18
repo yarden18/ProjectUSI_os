@@ -1,4 +1,11 @@
 # open sources
+
+
+#################################################################################################
+/* create new table in the database which include all the relevant features for the model */
+#################################################################################################
+
+
 CREATE TABLE features_labels_table_os2 AS SELECT issue_key, issue_type, project_key, created, epic_link, 
 has_change_story_point_sprint, summary, features_labels_table_os.description, acceptance_criteria, summary_description_acceptance,
 original_story_points_sprint, creator, reporter, priority, 
@@ -24,6 +31,11 @@ Alter table features_labels_table_os2 add column num_different_words_all_text_sp
 Alter table features_labels_table_os2 add column num_ratio_words_all_text_sprint float; 
 
 ############################ after the python code:############################################
+
+########################################################################################################
+/* calculted fields in the feature table (combination of the text fields, number of changes and more) */
+########################################################################################################
+
 
 Alter table features_labels_table_os2 add column original_summary_description_acceptance_sprint MEDIUMTEXT;       
 
