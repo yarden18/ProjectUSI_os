@@ -13,6 +13,7 @@ if __name__ == "__main__":
     is_after_all_but = True
 
     if is_after_chi:
+        # read all the data sets and delete from each one the unwanted features by the chi-square results in the excel files
         for project_key in projects_key:
             for label_name in dict_labels.items():
                 print("data: {}, \n label_name.key: {}, \n".format(project_key, label_name[0]))
@@ -75,6 +76,7 @@ if __name__ == "__main__":
                         features_data_test.drop(['has_code', 'has_url', 'has_template', 'has_acceptance_criteria',
                                                  'has_please', 'has_tbd', 'priority'], axis=1, inplace=True)
 
+                # update the new data
                 # write train val
                 features_data_train_valid.to_csv(
                     '{}/train_val_after_chi/features_data_train_{}_{}.csv'.format(
@@ -92,6 +94,7 @@ if __name__ == "__main__":
                         path,project_key, label_name[0]), index=False)
 
     if is_after_all_but:
+        # read all the data sets and delete from each one the unwanted features by the feature group omtimization results in the excel files
         for project_key in projects_key:
             for label_name in dict_labels.items():
                 print("data: {}, \n label_name.key: {}, \n".format(project_key, label_name[0]))
@@ -180,6 +183,7 @@ if __name__ == "__main__":
                                              'avg_num_word_in_sentence', 'has_tbd', 'has_acceptance_criteria',
                                              'noun_count', 'verb_count', 'adj_count', 'adv_count', 'pron_count',
                                              'num_stopwords'], axis=1, inplace=True)
+                # update the new data
                 # DM - all
                 # write train val
                 features_data_train_valid.to_csv(
