@@ -230,6 +230,10 @@ def vizu_word_in_topic(lda_model, corpus):
 
 
 def create_topic_model(data_train, data_test, number_of_topics, project_key):
+    """
+    the function get the data and return the dominant topic to the train and test set
+    """
+    
     words = 10
     text_train_list = []
     for row in data_train['clean_text_new']:
