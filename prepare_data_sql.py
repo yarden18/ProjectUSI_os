@@ -17,7 +17,7 @@ def add_cal_columns_(mysql_con, sql_add_columns, main_data, change_summary, chan
     function who add columns of original summary and original description and num_changes_summary_new and
     num_changes_description_new (if change is in the first hour and distance is less than 10 so num changes = 0
     and original description  = description.
-    input- sql connection, sql query, the neseccary tables with the data and indicator of looking on sprint or status (True means sprint)
+    input- sql connection, sql query, the neseccary tables with the data and indicator of looking on sprint or status (True means sprint, the second not in use)
     """
     for i in range(0, len(main_data)):
         issue_name = main_data['issue_key'][i]
