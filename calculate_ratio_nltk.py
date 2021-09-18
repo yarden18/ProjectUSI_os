@@ -4,7 +4,13 @@ import pandas as pd
 import mysql.connector
 
 
+
 def choose_data_base(db_name):
+    '''
+    function which creates connection to the data base in SQL,
+    input: server name
+    output: SQL connection
+    '''
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='{}'.format(db_name), auth_plugin='mysql_native_password',
                                         use_unicode=True)
@@ -20,9 +26,7 @@ if __name__ == "__main__":
     db_name = 'data_base_os'
     mysql_con = choose_data_base(db_name)
 
-    ########################################################################################################
-    # #################################choose which project to work with: ##################################
-    ########################################################################################################
+    # add 2 new columns in SQL table and update it by the calculation in the for loop
 
     data = pd.read_sql("SELECT * FROM main_table_os", con=mysql_con)
     sql_add_columns_first_different = """alter table main_table_os add column 
@@ -41,6 +45,7 @@ if __name__ == "__main__":
     except mysql.connector.IntegrityError:
         print("ERROR: Kumquat already exists!")
 
+    # calculate the num of changes and the ration    
     for i in range(0, len(data)):
         issue_key = data['issue_key'][i]
         original_text = data['original_summary_description_acceptance_sprint'][i]
@@ -51,6 +56,7 @@ if __name__ == "__main__":
             length_text_original = 1
         ratio = different/length_text_original
 
+        # update the results in the SQL table
         mycursor = mysql_con.cursor()
         try:
             mycursor.execute(sql_updata_columns, (int(different), float(ratio), issue_key))
