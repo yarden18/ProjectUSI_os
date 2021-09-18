@@ -5,11 +5,13 @@ import re
 
 if __name__ == '__main__':
     # open source: data_base_os end of _os to each table
+    # connect to SQL
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='data_base_os', auth_plugin='mysql_native_password',
                                         use_unicode=True)
     comments_data = pd.read_sql('SELECT * FROM comments_os', con=mysql_con)
 
+    # add new column in the table and clean the text of it
     sql_add_columns_first = """alter table comments_os add column clean_comment MEDIUMTEXT"""
     sql_add_columns = """UPDATE comments_os SET clean_comment =%s
                        WHERE (issue_key=%s and chronological_number=%s)"""
