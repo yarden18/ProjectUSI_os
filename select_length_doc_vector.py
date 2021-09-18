@@ -10,6 +10,7 @@ import clean_text
 
 
 def choose_data_base(db_name):
+    # connction to SQL
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='{}'.format(db_name), auth_plugin='mysql_native_password',
                                         use_unicode=True)
@@ -17,6 +18,9 @@ def choose_data_base(db_name):
 
 
 def split_train_valid_test(data_to_split):
+    """
+    the function get the data and splot it to train validation and test set
+    """
     data_to_split = data_to_split.sort_values(by=['time_add_to_sprint'])
     data_to_split = data_to_split.reset_index(drop=True)
     # with validation
@@ -49,6 +53,11 @@ def vec_for_learning(doc2vec_model, tagged_docs):
 
 
 def run_random_forest(x_train, x_test, y_train, y_test):
+    """
+    funcrion which get the train and test, run random forest prediction and return the results (accuracy, confusion_matrix, classification_report, 
+                                                                                                area_under_pre_recall_curve, average_precision, auc,
+                                                                                                y_pred, feature_imp, precision, recall, thresholds)
+    """
     clf = RandomForestClassifier(n_estimators=1000, max_features='sqrt', random_state=7)
     # Train the model
     clf.fit(x_train, y_train)
@@ -76,6 +85,10 @@ def run_random_forest(x_train, x_test, y_train, y_test):
 
 
 def create_doc_to_vec(train_data, test_data, labels_train, labels_test, project_key, path):
+    """
+    function who gets the project data, calculate the doc2vec to each size of the vector between 5,10,15,20
+    run the presiction model and save the results in excel file
+    """
     path = ''
     results = pd.DataFrame(columns=['project_key', 'usability_label', 'size', 'feature_importance', 'accuracy_rf',
                                     'confusion_matrix_rf', 'classification_report_rf', 'area_under_pre_recall_curve_rf',
@@ -119,7 +132,7 @@ def create_doc_to_vec(train_data, test_data, labels_train, labels_test, project_
              'y_test': labels_test['usability_label'], 'features': 'only vec'}
 
         results = results.append(d, ignore_index=True)
-
+        # write the results to excel
         results.to_csv(
             '{}/word_vector/results_{}_label_is_change_text_num_words_5.csv'.format(path,project_key),
             index=False)
@@ -127,6 +140,7 @@ def create_doc_to_vec(train_data, test_data, labels_train, labels_test, project_
 
 if __name__ == "__main__":
 
+    # extract the data from sql
     db_name_os = 'data_base_os'
     mysql_con_os = choose_data_base(db_name_os)
     path = ''
@@ -147,7 +161,7 @@ if __name__ == "__main__":
                    'is_change_text_num_words_20': 'num_unusable_issues_cretor_prev_text_word_20_ratio'}
 
     for data in data_all:
-
+        # run on all the 4 projects 
         project_key = data['project_key'][0]
         train, valid, test = split_train_valid_test(data)
 
