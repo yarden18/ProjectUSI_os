@@ -13,6 +13,10 @@ import nltk
 from string import punctuation
 
 def clean_text2(text2, project_key):
+     """
+    this function get the text field and the project name, and clean the text from unwanted signs
+    output: the clean text
+    """
 
     text = text2
     text = return_text_without_headlines(text)
@@ -111,6 +115,10 @@ def clean_text2(text2, project_key):
 
 
 def return_text_without_headlines(text):
+     """
+    this function get the text field and the project name, and clean the text from unwanted headlines signs
+    output: the clean text
+    """
 
     text = text.replace('\\n', '\n')
     text = text.replace('\\r', '\r')
@@ -198,6 +206,9 @@ def return_text_without_headlines(text):
 
 
 def check_if_in_head(name_head, headlines_list):
+    """
+    function that return 1 if the text contain headline, 0 else
+    """
     if name_head in headlines_list:
         is_headline = 1
     else:
@@ -206,6 +217,10 @@ def check_if_in_head(name_head, headlines_list):
 
 
 def clean_text(text):
+    """
+    this function get the text field and the project name, and clean the text from unwanted signs
+    output: the clean text
+    """
     text = text.replace('\\n', '\n')
     text = text.replace('\\r', '\r')
     text = text.replace('\\t', '\t')
@@ -271,6 +286,9 @@ def get_headlines(issue_description2):
 
 
 def check_if_has_code(text):
+    """
+    this function get the text field, and return 1 if the text contains code, 0 else
+    """
     text1 = re.sub(r"'''.*'''", "code", text)
     text2 = re.sub(r"{{code}}.*{{code}}", "code", text)
     text3 = re.sub(r"{code.*{code}", "code", text)
@@ -284,6 +302,9 @@ def check_if_has_code(text):
 
 
 def check_if_has_date(text):
+    """
+    this function get the text field, and return 1 if the text contains dates, 0 else
+    """
     text1 = re.sub(r'(\w{3,4,5})-(\d{1,2})-(\d{4})', 'date', text)
     text2 = re.sub(r'(\d{1,2})/(\d{1,2})/(\d{4})', 'date', text)
     text3 = re.sub(r'(\w{3}). (\d{1,2}), (\d{4})', 'date', text)
@@ -298,6 +319,9 @@ def check_if_has_date(text):
 
 
 def check_if_has_url(text):
+    """
+    this function get the text field, and return 1 if the text contains url address, 0 else
+    """
     text1 = re.sub(r"<a href=.*</a>", "url ", text)
     text2 = re.sub(r"http\S+", "url ", text)
     text3 = re.sub(r"hdfs://\S+", "url ", text)
@@ -312,6 +336,9 @@ def check_if_has_url(text):
 
 
 def get_priority(priority, project_k):
+    """
+    this function return the priority number of the USI
+    """
     if project_k == 'DEVELOPER':
         if priority == 'Nice to have':
             return 1
@@ -402,6 +429,7 @@ def avg_word(text):
 
 
 def basic_pre_processing(data):
+    # function which is doing preprocess to the text field and create clean text field
     stop = stopwords.words('english')
     # Removing Punctuation
     data['clean_text_new'] = data['clean_text']
@@ -422,6 +450,9 @@ def basic_pre_processing(data):
 
 
 def list_num_word_in_sen(text):
+    """
+    this function return the number of words in the sentence
+    """
     sentences = nltk.tokenize.sent_tokenize(text)
     sentences = [sent for sent in sentences if len(sent.split()) > 1]
     list_num_word_in_sen = list(
@@ -435,6 +466,9 @@ def list_num_word_in_sen(text):
 
 
 def is_description_empty_tbd(text):
+    """
+    this function return 1 if the description is empty, 0 else
+    """
     if text == 'TBD' or text == 'TODO' or text == '<p>TBD</p>\r\n' or text == '<p>c</p>\r\n' or \
             text == '<p>...</p>\r\n' or text is None or text.lower() == 'tbd' or text.lower() == 'todo':
         return 1
@@ -443,6 +477,9 @@ def is_description_empty_tbd(text):
 
 
 def is_acceptance_empty_tbd(text):
+    """
+    this function return 1 if the acceptance criteria is empty, 0 else
+    """
     if text == 'TBD' or text == 'TBD - Placeholder\n\n' or text == '\r\n\r\n' or text == '.\r\n' or text == '- a' or \
             text == '/' or text == '.' or text == '-' or text == '..' or text == '--' or text == '...' or text == 'NA' \
             or text == '?' or text is None or text.lower() == 'tbd':
@@ -459,6 +496,9 @@ def len_description(text):
 
 
 def create_feature_data(data, text_type, project_key):
+    """
+    this function get the data and add it features that we can extract from the text, by the help of the functions that details above
+    """
     stop = stopwords.words('english')
     features_data = pd.DataFrame()
     data['{}'.format(text_type)] = data['{}'.format(text_type)].apply(lambda x: x.replace(' $end$', "."))
