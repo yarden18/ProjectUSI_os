@@ -1,10 +1,14 @@
+###################################################################################
+/* delete all the USI which are no done yet or not related to any sprint  from
+the main table */
+###################################################################################
 
 
 UPDATE main_table_os SET num_comments_before_sprint = (select count(*)
-														from comments c1
-														where created <= (select time_add_to_sprint 
-																			from main_table_os c2 
-																			where c2.issue_key = c1.issue_key));
+from comments c1
+where created <= (select time_add_to_sprint 
+from main_table_os c2 
+where c2.issue_key = c1.issue_key));
                                                                             
                                                                             
 
@@ -18,6 +22,10 @@ delete
 from main_table2 
 where status_name != 'Done' and status_name != 'Closed';
 
+
+###################################################################################
+/* delete also from the other tables  */
+###################################################################################
 
 
 # ######################### done  #########################
@@ -129,7 +137,7 @@ where issue_key NOT IN (SELECT m.issue_key
                         
                         
                         
-# ######################### still not done   #########################
+# ######################### still not done  #########################
 
  
                         
