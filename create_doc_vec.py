@@ -5,6 +5,7 @@ from numpy import random
 random.seed(1)
 
 
+
 def tag_docs(docs, col):
     tagged = docs.apply(
         lambda r: TaggedDocument(words=(r['clean_text_new']),  tags=[(r['issue_key'])]), axis=1)
@@ -25,6 +26,11 @@ def vec_for_learning(doc2vec_model, tagged_docs):
 
 
 def create_doc_to_vec(train_data, test_data, is_first, size, project_key):
+"""
+this function creates the document vector.
+input: project data
+ouptup: train and test document vector feature
+"""
     train_index = train_data.index.values
     test_index = test_data.index.values
 
@@ -34,6 +40,7 @@ def create_doc_to_vec(train_data, test_data, is_first, size, project_key):
     test_tagged = tag_docs(test_data1, 'clean_text_new')
 
     if is_first:
+        # if the first running we creation the model
         # Init the Doc2Vec model
         model = Doc2Vec(size=size, min_count=2, alpha=0.025, seed=5, epochs=50, dm=1)
         # Build the Volabulary
@@ -50,6 +57,7 @@ def create_doc_to_vec(train_data, test_data, is_first, size, project_key):
         x_test = pd.DataFrame(x_test)
 
     else:
+        # else we only loading the model
         # loading the model
         d2v_model = Doc2Vec.load('doc2vec_10_{}.model'.format(project_key))
 
