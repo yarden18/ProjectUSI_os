@@ -5,6 +5,7 @@ import pandasql as ps
 
 
 def choose_data_base(db_name):
+    # connection to SQL
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='{}'.format(db_name), auth_plugin='mysql_native_password',
                                         use_unicode=True)
@@ -12,7 +13,9 @@ def choose_data_base(db_name):
 
 
 def remove_extracted_links(link_data):
-
+"""
+function which gets the issue link data and remove the unnecessary links
+"""
     for j in range(0, len(link_data)):
         for i in range(j, len(link_data)):
             try:
@@ -28,6 +31,9 @@ def remove_extracted_links(link_data):
 
 
 def check_if_link_in_string(is_before, link_str, word):
+    """
+    this function return 1 if the "word" excist in the link string, 0 else
+    """
     try:
         for i in range(0, len(word)):
             if link_str.lower().count(word[i]) > 0 and is_before == 1:
@@ -38,6 +44,11 @@ def check_if_link_in_string(is_before, link_str, word):
 
 
 def create_issue_links_features(data_help, original_data):
+    """
+    this function get the project data (original and the help table), check for each USI how many link types excist for it. 
+    the function add to the original data the features of how many issue links there is to each USI from the types of block, blocke by, 
+    duplicate by, duplicate and realtes, and return the data with the added columns.
+    """
 
     data_help['block'] = data_help.apply(lambda x: check_if_link_in_string(x['if_before'], x['to_string'], ['blocks',
                                                                 'has to be done before', 'is triggering']), axis=1)
@@ -71,10 +82,15 @@ def create_issue_links_features(data_help, original_data):
 
 
 def create_issue_links_all(data_developer, data_repo, data_xd, data_dm):
-
+    """
+    this function get all the projects data and for each one it extract the issue link data of it by another tables that we create by sql queries 
+    """
+    
+    # extract data
     db_name_os = 'data_base_os'
     mysql_con_os = choose_data_base(db_name_os)
 
+    # creat the help tables for all the projects, which includes the issue links
     help_data_developer = pd.read_sql("select t3.issue_key as issue_key1, t2.issue_key as issue_key2, "
                                       "t3.time_add_to_sprint, t2.created, t2.from_string, t2.to_string, t2.field, "
                                       "t3.time_add_to_sprint>t2.created as if_before from "
@@ -82,8 +98,11 @@ def create_issue_links_all(data_developer, data_repo, data_xd, data_dm):
                                       "data_base_os.all_changes_os t2 ON t3.issue_key = t2.issue_key "
                                       "and t2.field = 'Link' where t3.issue_key is not null and "
                                       "t3.project_key = 'DEVELOPER' ", con=mysql_con_os)
+    # run 2 functions which added the number of issue link of each type to the original data 
     help_data_developer = remove_extracted_links(help_data_developer)
     data_developer = create_issue_links_features(help_data_developer, data_developer)
+    
+    # do the same to the rest of the projects
 
     help_data_repo = pd.read_sql("select t3.issue_key as issue_key1, t2.issue_key as issue_key2, "
                                  "t3.time_add_to_sprint, t2.created, t2.from_string, t2.to_string, t2.field, "
