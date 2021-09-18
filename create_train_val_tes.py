@@ -8,6 +8,9 @@ import create_issue_link
 
 
 def choose_data_base(db_name):
+    """
+    connect to SQL
+    """
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='{}'.format(db_name), auth_plugin='mysql_native_password',
                                         use_unicode=True)
@@ -15,6 +18,9 @@ def choose_data_base(db_name):
 
 
 def split_train_valid_test(data_to_split):
+    """
+    function who get the data, split it to train, validation and test set (0.6,0.2,0.2), and return it
+    """
     data_to_split = data_to_split.sort_values(by=['time_add_to_sprint'])
     data_to_split = data_to_split.reset_index(drop=True)
     # with validation
@@ -29,6 +35,7 @@ def split_train_valid_test(data_to_split):
 
 if __name__ == "__main__":
 
+    # connect to SQL
     db_name_os = 'data_base_os'
     mysql_con_os = choose_data_base(db_name_os)
     path = ''
@@ -49,6 +56,7 @@ if __name__ == "__main__":
     # ######################################## data to issue links: ########################################
     ########################################################################################################
 
+    # add the issue link data to each project by the script create_issue_link
     data_developer, data_repo, data_xd, data_dm = create_issue_link.create_issue_links_all(data_developer, data_repo,
                                                                                            data_xd, data_dm)
 
@@ -76,6 +84,7 @@ if __name__ == "__main__":
             num_topics = 4
             size_vec = 10
 
+        # split to train validation and test set     
         train, valid, test = split_train_valid_test(data)
 
         # ############################ clean text and create all features ######################
@@ -83,7 +92,7 @@ if __name__ == "__main__":
         features_data_valid = clean_text_create_features.create_feature_data(valid, text_type, project_key)
         features_data_train_test = features_data_train_val.append(features_data_valid, ignore_index=True)
         features_data_test = clean_text_create_features.create_feature_data(test, text_type, project_key)
-        # ########### create doc vec################
+        # ########### create doc vec with the script create_doc_vec ################
         train_vec, valid_vec = create_doc_vec.create_doc_to_vec(train, valid, True, size_vec, project_key)
         features_data_train_val = pd.concat([features_data_train_val, train_vec], axis=1)
         features_data_valid = pd.concat([features_data_valid, valid_vec], axis=1)
@@ -92,7 +101,7 @@ if __name__ == "__main__":
         train_test_vec, test_vec = create_doc_vec.create_doc_to_vec(train_val, test, True, size_vec, project_key)
         features_data_train_test = pd.concat([features_data_train_test, train_test_vec], axis=1)
         features_data_test = pd.concat([features_data_test, test_vec], axis=1)
-        # ########### add topic model ################
+        # ########### add topic model with the script create_topic_model ################
         # train val
         dominant_topic_train_val, dominant_topic_valid = create_topic_model.create_topic_model(train, valid, num_topics, project_key)
         dominant_topic_train_val = dominant_topic_train_val.reset_index(drop=True)
@@ -109,6 +118,7 @@ if __name__ == "__main__":
         features_data_test['dominant_topic'] = dominant_topic_test['Dominant_Topic']
 
         for label_name in dict_labels.items():
+            # save label date to every set
             print("data {}: \n, \n label_name.key: {}, \n".format(project_key, label_name[0]))
             labels_train_val = pd.DataFrame()
             labels_valid = pd.DataFrame()
