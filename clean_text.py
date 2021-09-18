@@ -14,6 +14,10 @@ from string import punctuation
 
 
 def clean_text(text2, project_key):
+    """
+    this function get the text field and the project name, and clean the text from unwanted signs
+    output: the clean text
+    """
 
     text = text2
     text = return_text_without_headlines(text)
@@ -112,6 +116,10 @@ def clean_text(text2, project_key):
 
 
 def return_text_without_headlines(text):
+    """
+    this function get the text field and the project name, and clean the text from unwanted headlines signs
+    output: the clean text
+    """
 
     text = text.replace('\\n', '\n')
     text = text.replace('\\r', '\r')
@@ -217,6 +225,7 @@ def check_pos_tag(x, flag):
 
 
 def basic_pre_processing(data):
+    # function which is doing preprocess to the text field and create clean text field
     stop = stopwords.words('english')
     # Removing Punctuation
     data['clean_text_new'] = data['clean_text']
@@ -237,6 +246,9 @@ def basic_pre_processing(data):
 
 
 def create_clean_text(data, text_type):
+    """
+    this function run all the cleaning text function that details above
+    """
     stop = stopwords.words('english')
     data['{}'.format(text_type)] = data['{}'.format(text_type)].apply(lambda x: x.replace(' $end$', "."))
     data['{}'.format(text_type)] = data['{}'.format(text_type)].apply(
