@@ -6,6 +6,11 @@ import pandasql as ps
 
 
 def add_column_time_add_to_sprint(mysql_con, sql_query, main_table, change_sprint, sprints):
+    '''
+    functio which calculate the time that the USI enter to sprint
+    input: sql connection, the sql query which update the database with the results, the main table with the data, the change sprint table, the sprint table
+    there is no ouptut, the function calculate the time and write it to the new column in main table
+    '''
     main_table["time_add_to_sprint"] = ""
     for i in range(0, len(main_table)):
         issue_name = main_table['issue_key'][i]
@@ -51,10 +56,11 @@ def add_column_time_add_to_sprint(mysql_con, sql_query, main_table, change_sprin
 
 
 if __name__ == '__main__':
+    # connect to SQL
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='data_base_os', auth_plugin='mysql_native_password',
                                         use_unicode=True)
-
+    # read the data from SQL
     main_data = pd.read_sql('SELECT * FROM main_table_os', con=mysql_con)
     changes_sprint = pd.read_sql('SELECT * FROM changes_sprint_os', con=mysql_con)
     sprints = pd.read_sql('SELECT * FROM sprints_os', con=mysql_con)
@@ -63,6 +69,7 @@ if __name__ == '__main__':
     sql_add_time_add_to_sprint = """UPDATE main_table_os SET time_add_to_sprint =%s
         WHERE (issue_key=%s)"""
 
+    # run the fuction 
     add_column_time_add_to_sprint(mysql_con, sql_add_time_add_to_sprint, main_data, changes_sprint, sprints)
 
 
