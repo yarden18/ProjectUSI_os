@@ -5,6 +5,11 @@ import os
 
 
 if __name__ == "__main__":
+    """
+    this script read all the feature data (train and test), and run prediction script with the best parametrs and features, and run the script ml_algorithms_run_best_parameters
+    which get the features and parameters and run + return the results to all the different models.
+    we write in this script the results to excel
+    """
 
     results = pd.DataFrame(columns=['project_key', 'usability_label', 'feature_importance', 'accuracy_rf',
                                     'confusion_matrix_rf', 'classification_report_rf', 'area_under_pre_recall_curve_rf',
