@@ -10,11 +10,15 @@ import pandasql as ps
 
 # add columns in the changes table of time since first updated
 
-# function who add columns of original summary and original description and num_changes_summary_new and
-# num_changes_description_new (if change is in the first hour and distance is less than 10 so num changes = 0
-# and original description  = description.
+
 
 def add_cal_columns_(mysql_con, sql_add_columns, main_data, change_summary, change_description, change_story_point, changes_acceptance, comments, is_after_status):
+    """
+    function who add columns of original summary and original description and num_changes_summary_new and
+    num_changes_description_new (if change is in the first hour and distance is less than 10 so num changes = 0
+    and original description  = description.
+    input- sql connection, sql query, the neseccary tables with the data and indicator of looking on sprint or status (True means sprint)
+    """
     for i in range(0, len(main_data)):
         issue_name = main_data['issue_key'][i]
 
@@ -547,13 +551,15 @@ if __name__ == '__main__':
     mysql_con = mysql.connector.connect(user='root', password='', host='localhost',
                                         database='data_base_os', auth_plugin='mysql_native_password',
                                         use_unicode=True)
+    # read the data from SQL, all the wanted tables 
     main_data = pd.read_sql('SELECT * FROM main_table_os', con=mysql_con)
     changes_summary = pd.read_sql('SELECT * FROM changes_summary_os', con=mysql_con)
     changes_description = pd.read_sql('SELECT * FROM changes_description_os', con=mysql_con)
     changes_story_points = pd.read_sql('SELECT * FROM changes_story_points_os', con=mysql_con)
     changes_acceptance = pd.read_sql("SELECT * FROM changes_criteria_os", con=mysql_con)
     comments = pd.read_sql("SELECT * FROM comments_os", con=mysql_con)
-
+    
+    # sql queries to add the data 
     sql_add_columns = """UPDATE main_table_os SET 
     original_summary_sprint =%s, num_changes_summary_new_sprint=%s, 
     original_description_sprint=%s, num_changes_description_new_sprint=%s, original_story_points_sprint=%s, 
@@ -601,7 +607,7 @@ if __name__ == '__main__':
         num_comments_before_sprint =%s, num_comments_after_sprint=%s 
         WHERE (issue_key=%s)"""
 
-    # sptint
+    # sptint - run the function, which calculates the data and write is to the sql tables
     add_cal_columns_(mysql_con, sql_add_columns, main_data, changes_summary, changes_description, changes_story_points, changes_acceptance, comments, False)
 
     # status
